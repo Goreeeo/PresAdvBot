@@ -1,7 +1,9 @@
-# Files and directories created by pub.
 presadvbot/.dart_tool/
 presadvbot/.packages
 
-# Conventional directory for build output.
 presadvbot/build/
 presadvbot/.env
+
+presadvbotdbapi/build/
+presadvbotdbapi/node_modules/
+presadvbotdbapi/.env
