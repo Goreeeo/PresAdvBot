@@ -4,6 +4,7 @@ presadvbot/.packages
 presadvbot/build/
 presadvbot/.env
 
-presadvbotdbapi/build/
+presadvbotdbapi/dist/
 presadvbotdbapi/node_modules/
 presadvbotdbapi/.env
+presadvbotdbapi/tslint.json

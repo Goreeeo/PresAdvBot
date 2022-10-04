@@ -8,7 +8,6 @@ import "package:presadvbot/cmds/commands.dart";
 import "dart:io";
 
 import 'package:presadvbot/managers/env.dart';
-import 'package:presadvbot/managers/mongo.dart';
 
 void main() {
   mainAsync();

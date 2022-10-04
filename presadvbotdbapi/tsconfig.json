@@ -6,11 +6,17 @@
     "rootDir": "src",
     "resolveJsonModule": true,
     "allowJs": true,
-    "outDir": "build",
+    "outDir": "dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "node_modules/*"
+      ]
+    }
   }
 }
