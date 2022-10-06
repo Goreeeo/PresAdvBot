@@ -22,7 +22,7 @@ const schema = new mongoose.Schema({
         required: false
     },
     running_poll: {
-        type: mongoose.Schema.Types.ObjectId, ref: "polls",
+        type: Boolean,
         required: false
     }
 });

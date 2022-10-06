@@ -13,6 +13,14 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    question: {
+        type: String,
+        required: true,
+    },
+    options: {
+        type: [String],
+        required: true,
+    }
 });
 
 export default mongoose.model("polls", schema);

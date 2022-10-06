@@ -3,6 +3,7 @@ import Mongo from "./mongo/mongo";
 import * as partySchema from "./mongo/schema/party";
 import * as dotenv from "dotenv";
 import * as pollSchema from "./mongo/schema/poll";
+import * as userSchema from "./mongo/schema/user";
 
 dotenv.config();
 
@@ -47,14 +48,22 @@ app.post("/setPartyLeader", async(req, res) => {
 
 app.post("/startPoll", async(req, res) => {
     if (req.body.key !== process.env.ACCESS_KEY) res.sendStatus(401);
-    const poll = await pollSchema.default.findOneAndUpdate({ _id: req.body.party }, { _id: req.body.party, channel: req.body.channel, message: req.body.message });
-    await partySchema.default.findOneAndUpdate({ _id: req.body.party }, { _id: req.body.party, running_poll: poll });
+    const pollOptions = [req.body.options[0], req.body.options[1]];
+    for (let i = 2; i < 5; i++) {
+        if (req.body.options[i]) {
+            pollOptions[i] = req.body.options[i];
+        } else break;
+    }
+    await pollSchema.default.findOneAndUpdate({ _id: req.body.party }, { _id: req.body.party, channel: req.body.channel, message: req.body.message, question: req.body.question, options: pollOptions }, { upsert: true });
+    await partySchema.default.findOneAndUpdate({ _id: req.body.party }, { _id: req.body.party, running_poll: true }, { upsert: true });
     res.send("Done.");
 });
 
 app.post("/endPoll", async(req, res) => {
     if (req.body.key !== process.env.ACCESS_KEY) res.sendStatus(401);
-    await partySchema.default.findOneAndUpdate({ _id: req.body.party }, { _id: req.body.party, running_poll: null });
+    await partySchema.default.findOneAndUpdate({ _id: req.body.party }, { _id: req.body.party, running_poll: false });
+    const poll = await pollSchema.default.findOne({ _id: req.body.party });
+    res.send(poll?.toJSON());
 });
 
 app.get("/pollRes/:party", async(req, res) => {
@@ -65,6 +74,21 @@ app.get("/pollRes/:party", async(req, res) => {
     } else {
         res.sendStatus(404);
     }
+});
+
+app.get("/getMoney/:user", async(req, res) => {
+    const user = await userSchema.default.findOne({ _id: req.params.user });
+    if (user && user.money) {
+        res.send(user?.money?.toString());
+    } else {
+        res.send("0".toString());
+    }
+});
+
+app.post("/setMoney", async(req, res) => {
+    if (req.body.key !== process.env.ACCESS_KEY) res.sendStatus(401);
+    await userSchema.default.findOneAndUpdate({ _id: req.body.user }, { _id: req.body.user, money: Number.parseInt(req.body.money) }, { upsert: true });
+    res.send("Done!");
 });
 
 app.listen(port, () => {

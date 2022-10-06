@@ -21,6 +21,8 @@ void main() {
     ..registerSlashCommand(register)
     ..registerSlashCommand(party)
     ..registerSlashCommand(poll)
+    ..registerSlashCommand(money)
+    ..registerSlashCommand(economy)
     ..syncOnReady();
 
   bot.connect();
