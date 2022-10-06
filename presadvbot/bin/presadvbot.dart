@@ -10,10 +10,6 @@ import "dart:io";
 import 'package:presadvbot/managers/env.dart';
 
 void main() {
-  mainAsync();
-}
-
-void mainAsync() async {
   final bot = NyxxFactory.createNyxxWebsocket(Environment.getValue("BOT_TOKEN"),
       GatewayIntents.allUnprivileged | GatewayIntents.guildMembers);
   bot
@@ -23,11 +19,13 @@ void mainAsync() async {
 
   IInteractions.create(WebsocketInteractionBackend(bot))
     ..registerSlashCommand(register)
+    ..registerSlashCommand(party)
+    ..registerSlashCommand(poll)
     ..syncOnReady();
 
   bot.connect();
 
-  ProcessSignal.sigint.watch().listen((signal) async {
+  ProcessSignal.sigint.watch().listen((signal) {
     exit(0);
   });
 }

@@ -16,6 +16,14 @@ const schema = new mongoose.Schema({
     channel: {
         type: String,
         required: true
+    },
+    leader: {
+        type: String,
+        required: false
+    },
+    running_poll: {
+        type: mongoose.Schema.Types.ObjectId, ref: "polls",
+        required: false
     }
 });
 
